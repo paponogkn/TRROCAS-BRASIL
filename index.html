@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brainrot Trade Chat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff;
+    }
+
+    .chat-container {
+      width: 90%;
+      max-width: 600px;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 10px;
+      background-color: #222;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .message {
+      padding: 8px;
+      border-radius: 5px;
+      background-color: #333;
+    }
+
+    .trade {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 10px;
+      border: 1px solid #555;
+      border-radius: 5px;
+      margin-bottom: 5px;
+      background-color: #1a1a1a;
+      flex-wrap: wrap;
+    }
+
+    .trade button {
+      padding: 5px 10px;
+      margin-left: 5px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .trade button.accept {
+      background-color: #00ff00;
+      color: black;
+    }
+
+    .trade button.decline {
+      background-color: #ff0000;
+      color: black;
+    }
+
+    input {
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+      outline: none;
+      width: 100%;
+      margin-bottom: 5px;
+    }
+
+    .send-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff);
+      background-size: 400%;
+      animation: cores 4s linear infinite;
+      font-weight: bold;
+    }
+
+    @keyframes cores {
+      0% { background-position: 0%; }
+      100% { background-position: 400%; }
+    }
+
+    .private-chat {
+      margin-top: 20px;
+      width: 90%;
+      max-width: 600px;
+      border: 1px solid #444;
+      border-radius: 10px;
+      padding: 10px;
+      background-color: #222;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+  </style>
+</head>
+<body>
+
+<h1>Brainrot Trade Chat</h1>
+
+<div class="chat-container" id="chatContainer">
+  <!-- Mensagens e trades vão aparecer aqui -->
+</div>
+
+<div class="trade-form">
+  <input type="text" id="username" placeholder="Seu nome">
+  <input type="text" id="brainrot" placeholder="Brainrot que você tem">
+  <input type="number" id="quantity" placeholder="Quantidade">
+  <input type="number" id="mutations" placeholder="Mutações">
+  <input type="text" id="wants" placeholder="O que você quer em troca">
+  <button class="send-btn" onclick="postTrade()">Postar Troca</button>
+</div>
+
+<div class="private-chat" id="privateChat">
+  <h3>Chat Privado com <span id="chatWith"></span></h3>
+  <div id="privateMessages" style="max-height: 200px; overflow-y: auto;"></div>
+  <input type="text" id="privateInput" placeholder="Digite aqui...">
+  <button class="send-btn" onclick="sendPrivateMessage()">Enviar</button>
+</div>
+
+<script>
+  const chatContainer = document.getElementById('chatContainer');
+  let privateChatUser = '';
+
+  function postTrade() {
+    const username = document.getElementById('username').value;
+    const brainrot = document.getElementById('brainrot').value;
+    const quantity = document.getElementById('quantity').value;
+    const mutations = document.getElementById('mutations').value;
+    const wants = document.getElementById('wants').value;
+
+    if(!username || !brainrot || !quantity || !wants) return alert('Preencha todos os campos!');
+
+    const tradeDiv = document.createElement('div');
+    tradeDiv.classList.add('trade');
+    tradeDiv.innerHTML = `
+      <span><strong>${username}</strong>: ${brainrot} | Qtd: ${quantity} | Mutações: ${mutations} | Quer: ${wants}</span>
+      <div>
+        <button class="accept" onclick="acceptTrade(this)">✅️</button>
+        <button class="decline" onclick="declineTrade(this)">❌️</button>
+        <button onclick="openPrivateChat('${username}')">💬</button>
+      </div>
+    `;
+    chatContainer.appendChild(tradeDiv);
+
+    // Limpar campos
+    document.getElementById('brainrot').value = '';
+    document.getElementById('quantity').value = '';
+    document.getElementById('mutations').value = '';
+    document.getElementById('wants').value = '';
+  }
+
+  function acceptTrade(btn) {
+    btn.parentElement.parentElement.style.backgroundColor = '#004400';
+    btn.disabled = true;
+    btn.nextSibling.disabled = true;
+  }
+
+  function declineTrade(btn) {
+    btn.parentElement.parentElement.style.backgroundColor = '#440000';
+    btn.disabled = true;
+    btn.previousSibling.disabled = true;
+  }
+
+  function openPrivateChat(user) {
+    privateChatUser = user;
+    document.getElementById('chatWith').innerText = user;
+    document.getElementById('privateChat').style.display = 'flex';
+  }
+
+  function sendPrivateMessage() {
+    const input = document.getElementById('privateInput');
+    if(!input.value) return;
+    const msgDiv = document.createElement('div');
+    msgDiv.classList.add('message');
+    msgDiv.innerText = `Você: ${input.value}`;
+    document.getElementById('privateMessages').appendChild(msgDiv);
+    input.value = '';
+  }
+</script>
+
+</body>
+</html>
