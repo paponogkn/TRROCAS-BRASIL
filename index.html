@@ -120,8 +120,7 @@
 <div class="trade-form">
   <input type="text" id="username" placeholder="Seu nome">
   <input type="text" id="brainrot" placeholder="Brainrot que você tem">
-  <input type="number" id="quantity" placeholder="Quantidade">
-  <input type="number" id="mutations" placeholder="Mutações">
+  <input type="number" id="quantity" placeholder="QUANTOS PO/S">
   <input type="text" id="wants" placeholder="O que você quer em troca">
   <button class="send-btn" onclick="postTrade()">Postar Troca</button>
 </div>
@@ -141,7 +140,6 @@
     const username = document.getElementById('username').value;
     const brainrot = document.getElementById('brainrot').value;
     const quantity = document.getElementById('quantity').value;
-    const mutations = document.getElementById('mutations').value;
     const wants = document.getElementById('wants').value;
 
     if(!username || !brainrot || !quantity || !wants) return alert('Preencha todos os campos!');
@@ -149,7 +147,7 @@
     const tradeDiv = document.createElement('div');
     tradeDiv.classList.add('trade');
     tradeDiv.innerHTML = `
-      <span><strong>${username}</strong>: ${brainrot} | Qtd: ${quantity} | Mutações: ${mutations} | Quer: ${wants}</span>
+      <span><strong>${username}</strong>: ${brainrot} | QUANTOS PO/S: ${quantity} | Quer: ${wants}</span>
       <div>
         <button class="accept" onclick="acceptTrade(this)">✅️</button>
         <button class="decline" onclick="declineTrade(this)">❌️</button>
@@ -161,7 +159,6 @@
     // Limpar campos
     document.getElementById('brainrot').value = '';
     document.getElementById('quantity').value = '';
-    document.getElementById('mutations').value = '';
     document.getElementById('wants').value = '';
   }
 
